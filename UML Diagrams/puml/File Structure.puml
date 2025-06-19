@@ -1,0 +1,23 @@
+@startuml
+package "ConsoleAppBoilerplate" {
+    [pom.xml]
+    [README.md]
+    package "src.main.java" {
+        package "renderer" {
+            [ConsoleRenderer.java]
+        }
+        package "components" {
+            [Text.java]
+            [Button.java]
+            [Menu.java]
+            [MenuOption.java]
+        }
+        package "core" {
+            [UIComponent.java]
+            [BorderStyle.java]
+            [ConsoleApp.java]
+        }
+        [Main.java]
+    }
+}
+@enduml
