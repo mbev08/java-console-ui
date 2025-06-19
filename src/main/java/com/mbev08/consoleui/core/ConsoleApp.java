@@ -17,6 +17,7 @@ public class ConsoleApp {
 
     public ConsoleApp() {
         state = AppState.STARTUP;
+        this.views = new ArrayList<>();
         activeViewIndex = 0;
     }
 
@@ -31,16 +32,17 @@ public class ConsoleApp {
         AnsiConsole.systemInstall();
 
         do {
-            state = AppState.LOADING;
             clearScreen();
+            state = AppState.LOADING;
 
-
+            views.get(activeViewIndex).load();
 
             state = AppState.READY;
 
             if(input.nextLine().equals("EXIT")) {
                 state = AppState.EXIT;
             }
+
 
         } while (state != AppState.EXIT);
 

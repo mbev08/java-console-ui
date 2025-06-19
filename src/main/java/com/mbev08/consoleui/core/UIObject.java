@@ -1,54 +1,51 @@
 package com.mbev08.consoleui.core;
 
 
+import org.fusesource.jansi.Ansi;
+
+import static org.fusesource.jansi.Ansi.ansi;
+import static org.fusesource.jansi.Ansi.Color.*;
+
 /**
  * Abstract UI Object
  * */
 public class UIObject {
 
-    Position position;
-    Size size;
-    Spacing margin;
-    Content content;
-    Appearance currentAppearance;
-    Appearance defaultAppearance;
-    Appearance highlightedAppearance;
-    Appearance selectedAppearance;
-    boolean isSelectable;
+    public Position position;
+    public Size size;
+    public Spacing margin;
+    public Content content;
+    public Appearance currentAppearance;
+    public Appearance defaultAppearance;
+    public Appearance highlightedAppearance;
+    public Appearance selectedAppearance;
+    public boolean isSelectable;
 
+    public UIObject(String contentStr, boolean isSelectable) {
+        this.content = new Content(contentStr, contentStr);
+        this.isSelectable = isSelectable;
+
+        resolveAttributes();
+    }
     public UIObject(Content content, boolean isSelectable) {
         this.content = content;
         this.isSelectable = isSelectable;
 
-        setUnpopulatedAttributes();
+        resolveAttributes();
     }
 
-    public void setUnpopulatedAttributes() {
+    public void resolveAttributes() {
         if (this.content == null) {
             throw new NullPointerException("Content is null");
         }
 
-        setPosition(0, 0, 0);
-        setSize(content.text.length(), 1);
-        setMargin(0, 0, 0, 0);
-    }
-
-    public void setPosition(int x, int y, int z) {
-        position.x = x;
-        position.y = y;
-        position.z = z;
-    }
-
-    public void setSize(int width, int height) {
-        size.width = width;
-        size.height = height;
-    }
-
-    public void setMargin(int top, int bottom, int left, int right) {
-        margin.top = top;
-        margin.bottom = bottom;
-        margin.left = left;
-        margin.right = right;
+        position = new Position(0, 0, 0);
+        size = new Size(content.text.length(), 1);
+        margin = new Spacing(0, 0, 0, 0);
+        currentAppearance = new Appearance(BLACK, WHITE);
+        defaultAppearance = new Appearance(BLACK, WHITE);
+        highlightedAppearance = new Appearance(WHITE, BLACK);
+        selectedAppearance = new Appearance(BLACK, WHITE);
     }
 
     public void setAppearanceBasedOnDefault() {
@@ -56,8 +53,20 @@ public class UIObject {
             throw new NullPointerException("Default appearance is null");
         }
 
-        currentAppearance = new Appearance(defaultAppearance.bg, defaultAppearance.fg);
-        highlightedAppearance = new Appearance(defaultAppearance.fg, defaultAppearance.bg);
-        selectedAppearance = new Appearance(defaultAppearance.bg, defaultAppearance.fg);
+        currentAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
+        selectedAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
+        highlightedAppearance.update(defaultAppearance.fg, defaultAppearance.bg);
+    }
+
+    public void load() {
+        System.out.println( ansi()
+                .bg(defaultAppearance.bg).fg(defaultAppearance.fg)
+                .bold()
+                .a("(" + content.label + ")")
+                .boldOff()
+                .bg(highlightedAppearance.bg).fg(highlightedAppearance.fg)
+                .a(content.text)
+                .reset()
+        );
     }
 }

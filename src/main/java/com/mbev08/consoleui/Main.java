@@ -31,8 +31,26 @@ public class Main {
         {
             View mainMenu = new View(RED, BLACK);
 
-            UIObject welcomeText = new UIObject(new Content(""))
+            UIObject welcomeText = new UIObject("Welcome to the App!", false);
+            mainMenu.addUIObject(welcomeText);
+
+            UIObject welcomeText2 = new UIObject("HOPE YOU ENJOY THE SHOW", false);
+            welcomeText2.defaultAppearance.bg = RED;
+            welcomeText2.defaultAppearance.fg = BLUE;
+            welcomeText2.setAppearanceBasedOnDefault();
+            mainMenu.addUIObject(welcomeText2);
+
+            UIObject welcomeText3 = new UIObject(new Content("wt3", "surely this will work."), false);
+            welcomeText3.defaultAppearance.bg = YELLOW;
+            welcomeText3.defaultAppearance.fg = GREEN;
+            welcomeText3.setAppearanceBasedOnDefault();
+            mainMenu.addUIObject(welcomeText3);
+
+            app.addView(mainMenu);
         }
+
+
+        app.run();
 
 
     }

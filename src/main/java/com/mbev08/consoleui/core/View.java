@@ -17,6 +17,12 @@ public class View {
         appearance = new Appearance(bg, fg);
     }
 
+    public void load() {
+        for (UIObject uiObject : uiObjects) {
+            uiObject.load();
+        }
+    }
+
     public void addUIObject(UIObject uiObject) {
         applyViewAppearanceToUIObject(uiObject);
         uiObjects.add(uiObject);
