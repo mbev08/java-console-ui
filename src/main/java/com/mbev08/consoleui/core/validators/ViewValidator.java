@@ -3,12 +3,31 @@ package com.mbev08.consoleui.core.validators;
 import com.mbev08.consoleui.core.UIObject;
 import com.mbev08.consoleui.core.View;
 
-public class ViewValidator implements Validator {
 
+/**
+ * Validator for instances of {@link View}.
+ */
+public class ViewValidator implements Validator {
+    // TODO: convert to singleton.
+
+    /**
+     * Target {@link View} currently being validated.
+     */
     View view;
 
+    /**
+     * Construct instances of validator
+     */
     public ViewValidator() { }
 
+
+    /**
+     * Complete confirmation that an object passed all validation steps.
+     *
+     * @param object    {@link View} to validate.
+     *
+     * @return          pass/fail result for the object.
+     */
     @Override
     public boolean isValid(Object object) {
         this.view = (View) object;
@@ -19,6 +38,15 @@ public class ViewValidator implements Validator {
         return true;
     }
 
+    /**
+     * Checks for any {@link UIObject}(s) that would inappropriately collide with another object or boundary.
+     *
+     * <ol>
+     *     <li>{@link #checkForOriginPositionOverlap}
+     *     <li>checkForObjectOnObjectCollisions
+     *     <li>checkForConsoleAppBoundaryCollisions
+     * </ol>
+     */
     private void checkForObjectCollisions() {
         for (UIObject targetObject : view.uiObjects) {
             for (UIObject refObject : view.uiObjects) {
@@ -26,9 +54,10 @@ public class ViewValidator implements Validator {
                     continue;
                 }
 
+                //TODO: delete checkForOriginPositionOverlap and consolidate into checkForObjectOnObjectCollisions
                 checkForOriginPositionOverlap(targetObject, refObject);
-                //TODO: check for size overlap
-                //TODO: check for console app boundaries
+                //TODO: checkForObjectOnObjectCollisions
+                //TODO: checkForConsoleAppBoundaryCollisions
 
             }
         }

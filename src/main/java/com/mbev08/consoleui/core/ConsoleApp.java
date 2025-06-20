@@ -8,6 +8,9 @@ import org.fusesource.jansi.AnsiConsole;
 import static org.fusesource.jansi.Ansi.*;
 import static org.fusesource.jansi.Ansi.Color.*;
 
+/**
+ * The console app used to host {@link View}(s)
+ */
 public class ConsoleApp {
 
     Size size;
@@ -15,21 +18,39 @@ public class ConsoleApp {
     ArrayList<View> views;
     int activeViewIndex;
 
+    /**
+     * Construct app using default attributes
+     */
     public ConsoleApp() {
         size = new Size(10, 5);
         state = AppState.STARTUP;
         this.views = new ArrayList<>();
         activeViewIndex = 0;
     }
+
+    /**
+     * Construct app using specified size
+     *
+     * @param width     console app's width
+     * @param height    console app's height
+     */
     public ConsoleApp(int width, int height) {
         this();
         size = new Size(width, height);
     }
 
+    /**
+     * Append {@link View} to list of {@link #views}
+     *
+     * @param view  {@link View} to add.
+     */
     public void addView(View view) {
         views.add(view);
     }
 
+    /**
+     * Run the application's "main loop".
+     */
     public void run() {
         Scanner input = new Scanner(System.in);
 
@@ -56,6 +77,11 @@ public class ConsoleApp {
 
     }
 
+    /**
+     * Clear console
+     * <p>
+     * Typically called to prep prepare for next {@link View#load()}paint.
+     */
     private void clearScreen() {
         System.out.println( ansi().eraseScreen() );
     }
