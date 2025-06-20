@@ -40,8 +40,8 @@ public class ViewValidator implements Validator {
                 && obj2.position.z == obj1.position.z) {
             throw new RuntimeException(
                     "Object's origin position collision detected ("
-                            + obj1.content.label + " & "
-                            + obj2.content.label + ")"
+                            + obj1.text + " & "
+                            + obj2.text + ")"
                     );
         }
     }

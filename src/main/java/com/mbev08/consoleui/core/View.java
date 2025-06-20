@@ -9,32 +9,31 @@ import java.util.ArrayList;
 
 public class View {
 
+    public Position position;
+    public Size size;
     public ArrayList<UIObject> uiObjects;
     public Appearance appearance;
-    // TODO: create frame class
+    private Frame frame;
 
-    public View() {
-        uiObjects = new ArrayList<>();
+    public View(int x, int y, int z, int width, int height) {
+        this.position = new Position(x, y, z);
+        this.size = new Size(width, height);
+        this.uiObjects = new ArrayList<>();
+        this.frame = new Frame(this);
+        this.appearance = new Appearance(Color.BLACK, Color.WHITE);
     }
-    public View(Color bg, Color fg) {
-        uiObjects = new ArrayList<>();
-        appearance = new Appearance(bg, fg);
+    public View(int x, int y, int z, int width, int height, Color bg, Color fg) {
+        this(x, y, z, width, height);
+        this.appearance.update(bg, fg);
     }
 
     public void load() {
         Validator validator = new ViewValidator();
 
         if (validator.isValid(this)) {
-
-            // TODO: Call paint frame method
-
-            for (UIObject uiObject : uiObjects) {
-                uiObject.load();
-            }
+            frame.paint();
         }
     }
-
-    // TODO: create paint frame method
 
     public void addUIObject(UIObject uiObject) {
         applyViewAppearanceToUIObject(uiObject);
@@ -45,7 +44,6 @@ public class View {
         if (appearance != null) {
             if (uiObject.defaultAppearance == null) {
                 uiObject.defaultAppearance = appearance;
-                uiObject.setAppearanceBasedOnDefault();
             }
         }
     }

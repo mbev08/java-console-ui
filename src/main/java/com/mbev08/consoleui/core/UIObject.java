@@ -1,73 +1,176 @@
 package com.mbev08.consoleui.core;
 
 
+import com.mbev08.consoleui.enums.AttributeModifier;
 import org.fusesource.jansi.Ansi;
 
-import static org.fusesource.jansi.Ansi.ansi;
+import static org.fusesource.jansi.Ansi.Color;
 import static org.fusesource.jansi.Ansi.Color.*;
 
-/**
- * Abstract UI Object
- * */
+
 public class UIObject {
 
     public Position position;
     public Size size;
-    public Spacing margin;
-    public Content content;
+    public Spacing padding;
+    public String text;
     public Appearance currentAppearance;
     public Appearance defaultAppearance;
     public Appearance highlightedAppearance;
     public Appearance selectedAppearance;
     public boolean isSelectable;
 
-    public UIObject(String contentStr, boolean isSelectable) {
-        this.content = new Content(contentStr, contentStr);
-        this.isSelectable = isSelectable;
-
-        resolveAttributes();
-    }
-    public UIObject(Content content, boolean isSelectable) {
-        this.content = content;
-        this.isSelectable = isSelectable;
-
-        resolveAttributes();
-    }
-
-    public void resolveAttributes() {
-        if (this.content == null) {
-            throw new NullPointerException("Content is null");
+    public UIObject(String text, boolean isSelectable) {
+        if (text == null) {
+            throw new NullPointerException("Text is null");
         }
 
-        position = new Position(0, 0, 0);
-        size = new Size(content.text.length(), 1);
-        margin = new Spacing(0, 0, 0, 0);
-        currentAppearance = new Appearance(BLACK, WHITE);
-        defaultAppearance = new Appearance(BLACK, WHITE);
-        highlightedAppearance = new Appearance(WHITE, BLACK);
-        selectedAppearance = new Appearance(BLACK, WHITE);
+        this.text = text;
+        this.isSelectable = isSelectable;
+
+        // TODO: add constants instead of hardcoding.
+        this.position = new Position(0, 0, 0);
+        this.size = new Size(text.length(), 1);
+        this.padding = new Spacing(0, 0, 0, 0);
+        this.currentAppearance = new Appearance(BLACK, WHITE);
+        this.defaultAppearance = new Appearance(BLACK, WHITE);
+        this.highlightedAppearance = new Appearance(WHITE, BLACK);
+        this.selectedAppearance = new Appearance(BLACK, WHITE);
     }
 
-    public void setAppearanceBasedOnDefault() {
+    public void updateDefaultAppearance(Color bg, Color fg) {
+        defaultAppearance.update(bg, fg);
+        currentAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
+        setAppearanceBasedOnDefault();
+    }
+
+    private void setAppearanceBasedOnDefault() {
         if (defaultAppearance == null) {
             throw new NullPointerException("Default appearance is null");
         }
 
-        currentAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
-        selectedAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
-        highlightedAppearance.update(defaultAppearance.fg, defaultAppearance.bg);
+        if (highlightedAppearance.modifier == AttributeModifier.AUTO) {
+            highlightedAppearance.update(defaultAppearance.fg, defaultAppearance.bg);
+        }
+
+        if (selectedAppearance.modifier == AttributeModifier.AUTO) {
+            selectedAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
+        }
     }
 
-    public void load() {
-        // TODO: change to print
-        System.out.println( ansi()
-                .bg(defaultAppearance.bg).fg(defaultAppearance.fg)
-                .bold()
-                .a("(" + content.label + ")")
-                .boldOff()
-                .bg(highlightedAppearance.bg).fg(highlightedAppearance.fg)
-                .a(content.text)
-                .reset()
-        );
+    public int getEndingYPosition() {
+        return position.y + size.height - 1;
     }
+
+    public int getEndingXPosition() {
+        return position.x + size.width - 1;
+    }
+
+    private void refreshSize() {
+        int newWidth, newHeight;
+
+        newWidth = text.length() + padding.left + padding.right;
+        newHeight = 1 + padding.top + padding.bottom; // TODO: Probably need to add some kind of word wrap consideration here.
+
+        size.update(newWidth, newHeight);
+    }
+
+    private boolean charIsEmpty(char ch) {
+        return ch == 0;
+    }
+
+    private char[] newLineToCharArray(char[] line) {
+        for (int x = 0; x < line.length; x++) {
+            line[x] = ' ';
+        }
+
+        return line;
+    }
+
+    private char[][] verticalPaddingToCharArray(int paddingStack, char[][] charMatrix) {
+        if (paddingStack <= 0) {
+            return charMatrix;
+        }
+
+        for (int y = 0; y < charMatrix.length; y++) {
+            if(!charIsEmpty(charMatrix[y][0])) {
+                continue;
+            }
+
+            for (int i = 0; i < paddingStack; i++) {
+                charMatrix[y] = newLineToCharArray(charMatrix[y]);
+                y++;
+            }
+            break;
+        }
+
+        return charMatrix;
+    }
+
+    private char[] horizontalPaddingToCharArray(int paddingStack, char[] line) {
+        if (paddingStack <= 0) {
+            return line;
+        }
+
+        for (int x = 0; x < line.length; x++) {
+            if (!charIsEmpty(line[x])) {
+                continue;
+            }
+
+            for (int i = 0; i < paddingStack; i++) {
+                line[x] = ' ';
+                x++;
+            }
+            break;
+        }
+
+        return line;
+    }
+
+    private char[] textToCharArray(int textStack, char[] line) {
+        char[] textChars = text.toCharArray();
+
+        for (int x = 0; x < line.length; x++) {
+            if (!charIsEmpty(line[x])) {
+                continue;
+            }
+
+            for (int i = 0; i < textStack; i++) {
+                line[x] = textChars[i];
+                x++;
+            }
+            break;
+        }
+
+        return line;
+    }
+
+    public char[][] toCharMatrix() {
+        if (size.modifier == AttributeModifier.AUTO) {
+            refreshSize();
+        }
+
+        char[][] charMatrix = new char[size.height][size.width];
+        int x = 0, y = 0;
+
+        // TODO: Add consideration of wordwrap
+        // TODO: Ensure validation against running out of room for text per size
+        charMatrix = verticalPaddingToCharArray(padding.top, charMatrix);
+        y += padding.top;
+
+        charMatrix[y] = horizontalPaddingToCharArray(padding.left, charMatrix[y]);
+        x += padding.left;
+
+        charMatrix[y] = textToCharArray(text.length(), charMatrix[y]);
+        x += text.length();
+
+        charMatrix[y] = horizontalPaddingToCharArray(padding.right, charMatrix[y]);
+        x += padding.right;
+
+        charMatrix = verticalPaddingToCharArray(padding.bottom, charMatrix);
+        y = padding.bottom;
+
+        return charMatrix;
+    }
+
 }

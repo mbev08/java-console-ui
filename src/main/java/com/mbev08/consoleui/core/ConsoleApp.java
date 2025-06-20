@@ -10,14 +10,20 @@ import static org.fusesource.jansi.Ansi.Color.*;
 
 public class ConsoleApp {
 
+    Size size;
     AppState state;
     ArrayList<View> views;
     int activeViewIndex;
 
     public ConsoleApp() {
+        size = new Size(10, 5);
         state = AppState.STARTUP;
         this.views = new ArrayList<>();
         activeViewIndex = 0;
+    }
+    public ConsoleApp(int width, int height) {
+        this();
+        size = new Size(width, height);
     }
 
     public void addView(View view) {
@@ -25,7 +31,6 @@ public class ConsoleApp {
     }
 
     public void run() {
-
         Scanner input = new Scanner(System.in);
 
         AnsiConsole.systemInstall();
