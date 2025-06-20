@@ -14,10 +14,14 @@ public class UIObject {
     public Size size;
     public Spacing padding;
     public String text;
+
+    // TODO: Replace *Appearance vars with ColorSchemeService
     public Appearance currentAppearance;
     public Appearance defaultAppearance;
     public Appearance highlightedAppearance;
     public Appearance selectedAppearance;
+
+    // TODO: Replace isSelectable w/ Enum ObjectType
     public boolean isSelectable;
 
     public UIObject(String text, boolean isSelectable) {
@@ -32,10 +36,16 @@ public class UIObject {
         this.position = new Position(0, 0, 0);
         this.size = new Size(text.length(), 1);
         this.padding = new Spacing(0, 0, 0, 0);
-        this.currentAppearance = new Appearance(BLACK, WHITE);
-        this.defaultAppearance = new Appearance(BLACK, WHITE);
-        this.highlightedAppearance = new Appearance(WHITE, BLACK);
-        this.selectedAppearance = new Appearance(BLACK, WHITE);
+        this.currentAppearance = new Appearance();
+        this.defaultAppearance = new Appearance();
+        this.highlightedAppearance = new Appearance();
+        this.selectedAppearance = new Appearance();
+    }
+
+    public UIObject(String text, boolean isSelectable, Color defaultBg, Color defaultFg ) {
+        this(text, isSelectable);
+
+        this.defaultAppearance.update(defaultBg, defaultFg);
     }
 
     public void updateDefaultAppearance(Color bg, Color fg) {

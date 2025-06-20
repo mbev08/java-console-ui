@@ -11,22 +11,34 @@ import static org.fusesource.jansi.Ansi.Color;
  * <i>(e.g. bg color, fg color)</i>
  */
 public class Appearance implements AggregatedAttribute{
+    // TODO: Rename Appearance to ColorScheme
+    // TODO: Create ColorSchemeService
+
     public Color bg, fg;
     public AttributeModifier modifier;
 
     /**
-     * Constructs instance using default {@link AttributeModifier:} (AUTO)
-     * @param bg
-     * @param fg
+     * Constructs instance with <i><b>NULL</b></i> using default {@link AttributeModifier#AUTO:}
      */
-    public Appearance(Color bg, Color fg) {
-        this.bg = bg;
-        this.fg = fg;
+    public Appearance() {
+        this.bg = null;
+        this.fg = null;
         this.modifier = AttributeModifier.AUTO;
     }
 
     /**
-     * Constructs instance using provided Attribute Modifier (presumably MANUAL)
+     * Constructs instance using default {@link AttributeModifier#AUTO:}
+     * @param bg
+     * @param fg
+     */
+    public Appearance(Color bg, Color fg) {
+        this();
+        update(bg, fg);
+    }
+
+    /**
+     * Constructs instance using provided (presumably {@link AttributeModifier#MANUAL})
+     *
      * @param bg
      * @param fg
      * @param modifier

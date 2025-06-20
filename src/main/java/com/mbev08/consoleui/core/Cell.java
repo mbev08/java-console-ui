@@ -12,6 +12,7 @@ import static org.fusesource.jansi.Ansi.ansi;
  * <i>(e.g. bg color, fg color)</i>
  */
 public class Cell implements AggregatedAttribute {
+    // TODO: Rename Cell to Block
 
     public char charValue;
     public Color bg, fg;
