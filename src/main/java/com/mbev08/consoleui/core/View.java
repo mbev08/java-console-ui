@@ -1,13 +1,16 @@
 package com.mbev08.consoleui.core;
 
+import com.mbev08.consoleui.core.validators.Validator;
+import com.mbev08.consoleui.core.validators.ViewValidator;
+
 import static org.fusesource.jansi.Ansi.Color;
 import java.util.ArrayList;
 
 
 public class View {
 
-    ArrayList<UIObject> uiObjects;
-    Appearance appearance;
+    public ArrayList<UIObject> uiObjects;
+    public Appearance appearance;
 
     public View() {
         uiObjects = new ArrayList<>();
@@ -18,8 +21,12 @@ public class View {
     }
 
     public void load() {
-        for (UIObject uiObject : uiObjects) {
-            uiObject.load();
+        Validator validator = new ViewValidator();
+
+        if (validator.isValid(this)) {
+            for (UIObject uiObject : uiObjects) {
+                uiObject.load();
+            }
         }
     }
 

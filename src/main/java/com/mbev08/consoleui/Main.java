@@ -35,14 +35,14 @@ public class Main {
             mainMenu.addUIObject(welcomeText);
 
             UIObject welcomeText2 = new UIObject("HOPE YOU ENJOY THE SHOW", false);
-            welcomeText2.defaultAppearance.bg = RED;
-            welcomeText2.defaultAppearance.fg = BLUE;
+            welcomeText2.position.update(1, 2, 3);
+            welcomeText2.defaultAppearance.update(RED, BLUE);
             welcomeText2.setAppearanceBasedOnDefault();
             mainMenu.addUIObject(welcomeText2);
 
             UIObject welcomeText3 = new UIObject(new Content("wt3", "surely this will work."), false);
-            welcomeText3.defaultAppearance.bg = YELLOW;
-            welcomeText3.defaultAppearance.fg = GREEN;
+            welcomeText3.position.update(2, 2, 3);
+            welcomeText3.defaultAppearance.update(WHITE, BLACK);
             welcomeText3.setAppearanceBasedOnDefault();
             mainMenu.addUIObject(welcomeText3);
 
