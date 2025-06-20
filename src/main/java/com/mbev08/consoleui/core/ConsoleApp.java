@@ -14,7 +14,6 @@ public class ConsoleApp {
     ArrayList<View> views;
     int activeViewIndex;
 
-
     public ConsoleApp() {
         state = AppState.STARTUP;
         this.views = new ArrayList<>();

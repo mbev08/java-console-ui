@@ -59,6 +59,7 @@ public class UIObject {
     }
 
     public void load() {
+        // TODO: change to print
         System.out.println( ansi()
                 .bg(defaultAppearance.bg).fg(defaultAppearance.fg)
                 .bold()

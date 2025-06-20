@@ -11,6 +11,7 @@ public class View {
 
     public ArrayList<UIObject> uiObjects;
     public Appearance appearance;
+    // TODO: create frame class
 
     public View() {
         uiObjects = new ArrayList<>();
@@ -24,11 +25,16 @@ public class View {
         Validator validator = new ViewValidator();
 
         if (validator.isValid(this)) {
+
+            // TODO: Call paint frame method
+
             for (UIObject uiObject : uiObjects) {
                 uiObject.load();
             }
         }
     }
+
+    // TODO: create paint frame method
 
     public void addUIObject(UIObject uiObject) {
         applyViewAppearanceToUIObject(uiObject);

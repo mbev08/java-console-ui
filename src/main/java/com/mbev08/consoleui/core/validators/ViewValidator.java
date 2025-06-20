@@ -27,6 +27,9 @@ public class ViewValidator implements Validator {
                 }
 
                 checkForOriginPositionOverlap(targetObject, refObject);
+                //TODO: check for size overlap
+                //TODO: check for console app boundaries
+
             }
         }
     }
