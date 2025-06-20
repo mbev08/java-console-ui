@@ -32,19 +32,18 @@ public class UIObject {
         this.text = text;
         this.isSelectable = isSelectable;
 
-        // TODO: add constants instead of hardcoding.
-        this.position = new Position(0, 0, 0);
-        this.size = new Size(text.length(), 1);
-        this.padding = new Spacing(0, 0, 0, 0);
-        this.currentAppearance = new Appearance();
-        this.defaultAppearance = new Appearance();
-        this.highlightedAppearance = new Appearance();
-        this.selectedAppearance = new Appearance();
+        this.position = Config.uiObjectPositionDefault;
+        this.size = new Size(text.length(), Config.uiObjectSizeDefault.height);
+        this.padding = Config.uiObjectPaddingDefault;
+
+        this.currentAppearance = new Appearance(Config.uiObjectColorSchemeDefault.bg, Config.uiObjectColorSchemeDefault.fg);
+        this.defaultAppearance = new Appearance(Config.uiObjectColorSchemeDefault.bg, Config.uiObjectColorSchemeDefault.fg);
+        this.highlightedAppearance = new Appearance(Config.uiObjectColorSchemeDefault.bg, Config.uiObjectColorSchemeDefault.fg);
+        this.selectedAppearance = this.defaultAppearance;
     }
 
     public UIObject(String text, boolean isSelectable, Color defaultBg, Color defaultFg ) {
         this(text, isSelectable);
-
         this.defaultAppearance.update(defaultBg, defaultFg);
     }
 
