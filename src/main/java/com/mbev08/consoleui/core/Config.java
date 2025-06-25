@@ -77,10 +77,10 @@ public class Config {
                     uiObjectDefaultPaddingTop, uiObjectDefaultPaddingBottom,
                     uiObjectDefaultPaddingLeft, uiObjectDefaultPaddingRight);
 
-            Color uiObjectDefaultBgColor, uiObjectDefaultFgColor;
-            uiObjectDefaultBgColor = Color.valueOf(properties.getProperty("UIObject.colorscheme.default.bg"));
-            uiObjectDefaultFgColor = Color.valueOf(properties.getProperty("UIObject.colorscheme.default.fg"));
-            uiObjectColorSchemeDefault = new Appearance(uiObjectDefaultBgColor, uiObjectDefaultFgColor);
+            //Color uiObjectDefaultBgColor, uiObjectDefaultFgColor;
+            //uiObjectDefaultBgColor = Color.valueOf(properties.getProperty("UIObject.colorscheme.default.bg"));
+            //uiObjectDefaultFgColor = Color.valueOf(properties.getProperty("UIObject.colorscheme.default.fg"));
+            //uiObjectColorSchemeDefault = new Appearance(uiObjectDefaultBgColor, uiObjectDefaultFgColor);
 
         }
     }

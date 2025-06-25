@@ -23,8 +23,8 @@ public class Main {
             welcomeText.position.update((w / 2) - ( welcomeText.text.length() / 2 ), 0, 0);
             mainMenu.addUIObject(welcomeText);
 
-            UIObject welcomeText2 = new UIObject("HOPE YOU ENJOY THE SHOW", true);
-            welcomeText2.position.update((w / 2) - ( welcomeText.text.length() / 2 ), 0, 0);
+            UIObject welcomeText2 = new UIObject("HOPE YOU ENJOY THE SHOW", false);
+            welcomeText2.position.update(0, 5, 1);
             welcomeText2.padding.update(2, 0, 2, 1);
             welcomeText2.updateDefaultAppearance(MAGENTA, WHITE);
             mainMenu.addUIObject(welcomeText2);

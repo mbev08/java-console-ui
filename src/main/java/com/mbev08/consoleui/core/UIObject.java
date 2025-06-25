@@ -32,14 +32,14 @@ public class UIObject {
         this.text = text;
         this.isSelectable = isSelectable;
 
-        this.position = Config.uiObjectPositionDefault;
+        this.position = new Position(Config.uiObjectPositionDefault.x, Config.uiObjectPositionDefault.y, Config.uiObjectPositionDefault.z);
         this.size = new Size(text.length(), Config.uiObjectSizeDefault.height);
-        this.padding = Config.uiObjectPaddingDefault;
+        this.padding = new Spacing(Config.uiObjectPaddingDefault.top, Config.uiObjectPaddingDefault.bottom, Config.uiObjectPaddingDefault.left, Config.uiObjectPaddingDefault.right);
 
-        this.currentAppearance = new Appearance(Config.uiObjectColorSchemeDefault.bg, Config.uiObjectColorSchemeDefault.fg);
-        this.defaultAppearance = new Appearance(Config.uiObjectColorSchemeDefault.bg, Config.uiObjectColorSchemeDefault.fg);
-        this.highlightedAppearance = new Appearance(Config.uiObjectColorSchemeDefault.bg, Config.uiObjectColorSchemeDefault.fg);
-        this.selectedAppearance = this.defaultAppearance;
+        this.defaultAppearance = new Appearance(null, null );
+        this.highlightedAppearance = new Appearance(null, null );
+        this.selectedAppearance = new Appearance(null, null );
+        this.currentAppearance = this.defaultAppearance;
     }
 
     public UIObject(String text, boolean isSelectable, Color defaultBg, Color defaultFg ) {

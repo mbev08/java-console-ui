@@ -92,8 +92,8 @@ public class View {
     private void applyViewAppearanceToUIObject(UIObject uiObject) {
         // TODO: Throw exception if appearance is null
         if (appearance != null) {
-            if (uiObject.defaultAppearance == null) {
-                uiObject.defaultAppearance = appearance;
+            if (uiObject.defaultAppearance.bg == null) {
+                uiObject.updateDefaultAppearance(appearance.bg, appearance.fg);
             }
         }
     }
