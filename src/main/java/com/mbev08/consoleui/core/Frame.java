@@ -3,7 +3,7 @@ package com.mbev08.consoleui.core;
 import java.util.ArrayList;
 
 /**
- * Manages each {@link Cell} in the {@link Frame#cellMatrix}
+ * Manages each {@link Block} in the {@link Frame#blockMatrix}
  * according to the {@link Frame#view}'s {@link View#uiObjects}
  * and other attributes (e.g. {@link Frame#size}
  */
@@ -14,7 +14,7 @@ public class Frame {
     public Size size;
     // TODO: Add defaultColorScheme
     // TODO: Rename cellMatrix... Canvas?
-    private Cell[][] cellMatrix;
+    private Block[][] blockMatrix;
 
     /**
      * Constructs instance only using the provided {@link View}'s Attributes.
@@ -25,13 +25,13 @@ public class Frame {
         this.view = view;
         this.position = view.position;
         this.size = view.size;
-        this.cellMatrix = new Cell[size.height][size.width];
+        this.blockMatrix = new Block[size.height][size.width];
 
         // create new Cells for cellMatrix
         {
             for (int y = 0; y < size.height; y++) {
                 for (int x = 0; x < size.width; x++) {
-                    this.cellMatrix[y][x] = new Cell(' ', null, null);
+                    this.blockMatrix[y][x] = new Block(' ', null, null);
                 }
             }
         }
@@ -55,18 +55,18 @@ public class Frame {
     /**
      * Handles the prep and completion of painting each block to the canvas
      * <ol>
-     *     <li>Clear {@link Cell}s in {@link Frame#cellMatrix},
-     *     <li>Compile new attributes for each {@link Cell}s in {@link Frame#cellMatrix},
+     *     <li>Clear {@link Block}s in {@link Frame#blockMatrix},
+     *     <li>Compile new attributes for each {@link Block}s in {@link Frame#blockMatrix},
      *     <li>Paint (output) the canvas to the screen.
      * </ol>
      */
     public void paint() {
-        clearCellMatrix();
+        clearBlockMatrix();
         compile(view.uiObjects);
 
-        for (Cell[] row : cellMatrix) {
-            for (Cell cell : row) {
-                cell.paint();
+        for (Block[] row : blockMatrix) {
+            for (Block block : row) {
+                block.paint();
             }
             System.out.println();
         }
@@ -75,18 +75,18 @@ public class Frame {
     }
 
     /**
-     * Clear {@link Cell}s in {@link Frame#cellMatrix},
+     * Clear {@link Block}s in {@link Frame#blockMatrix},
      */
-    private void clearCellMatrix() {
-        for (Cell[] row : cellMatrix) {
-            for (Cell cell : row) {
-                cell.clear();
+    private void clearBlockMatrix() {
+        for (Block[] row : blockMatrix) {
+            for (Block block : row) {
+                block.clear();
             }
         }
     }
 
     /**
-     * Compile new attributes for each {@link Cell}s in {@link Frame#cellMatrix},
+     * Compile new attributes for each {@link Block}s in {@link Frame#blockMatrix},
      * <ol>
      *     <li>Populates blocks to allocate space for {@link View#uiObjects}
      *     <li>Populates whitespace in unallocated space
@@ -103,7 +103,7 @@ public class Frame {
                 for (int y = uiObject.position.y; y <= uiObject.getEndingYPosition(); y++) {
                     for (int x = uiObject.position.x; x <= uiObject.getEndingXPosition(); x++) {
                         char objChar = objMatrix[y - uiObject.position.y][x - uiObject.position.x];
-                        cellMatrix[y][x].update(objChar, uiObject.currentAppearance.bg, uiObject.currentAppearance.fg);
+                        blockMatrix[y][x].update(objChar, uiObject.currentAppearance.bg, uiObject.currentAppearance.fg);
                     }
                 }
             }
@@ -113,8 +113,8 @@ public class Frame {
         {
             for (int y = 0; y < size.height; y++) {
                 for (int x = 0; x < size.width; x++) {
-                    if (cellMatrix[y][x].bg == null) {
-                        cellMatrix[y][x].update(' ', view.appearance.bg, view.appearance.fg);
+                    if (blockMatrix[y][x].bg == null) {
+                        blockMatrix[y][x].update(' ', view.appearance.bg, view.appearance.fg);
                     }
                 }
             }
