@@ -92,31 +92,40 @@ public class Frame {
      * @param uiObjects     =   Target list of {@link UIObject}
      */
     private void compile(ArrayList<UIObject> uiObjects) {
-        // TODO: refactor into 2 separate functions.
-        // Populates blocks to allocate space for View#uiObjects
-        {
-            for (UIObject uiObject : uiObjects) {
-                char[][] objAsBlockMatrix = uiObject.toCharMatrix();
+        loadUIObjectsToCanvas(uiObjects);
+        loadBlankBlocksToCanvas();
+    }
 
-                for (int y = uiObject.position.y; y <= uiObject.getEndingYPosition(); y++) {
-                    for (int x = uiObject.position.x; x <= uiObject.getEndingXPosition(); x++) {
-                        char objChar = objAsBlockMatrix[y - uiObject.position.y][x - uiObject.position.x];
-                        canvas[y][x].update(objChar, uiObject.currentAppearance.bg, uiObject.currentAppearance.fg);
-                    }
+    /**
+     * Populates blocks to allocate space for {@link View#uiObjects}
+     *
+     * @param uiObjects
+     */
+    private void loadUIObjectsToCanvas(ArrayList<UIObject> uiObjects) {
+
+        for (UIObject uiObject : uiObjects) {
+            char[][] objAsBlockMatrix = uiObject.toCharMatrix();
+
+            for (int y = uiObject.position.y; y <= uiObject.getEndingYPosition(); y++) {
+                for (int x = uiObject.position.x; x <= uiObject.getEndingXPosition(); x++) {
+                    char objChar = objAsBlockMatrix[y - uiObject.position.y][x - uiObject.position.x];
+                    canvas[y][x].update(objChar, uiObject.currentAppearance.bg, uiObject.currentAppearance.fg);
                 }
             }
         }
 
-        // Populates whitespace in unallocated space
-        {
-            for (int y = 0; y < size.height; y++) {
-                for (int x = 0; x < size.width; x++) {
-                    if (canvas[y][x].bg == null) {
-                        canvas[y][x].update(' ', view.appearance.bg, view.appearance.fg);
-                    }
+    }
+
+    /**
+     * Populates whitespace in unallocated space
+     */
+    private void loadBlankBlocksToCanvas() {
+        for (int y = 0; y < size.height; y++) {
+            for (int x = 0; x < size.width; x++) {
+                if (canvas[y][x].bg == null) {
+                    canvas[y][x].update(' ', view.appearance.bg, view.appearance.fg);
                 }
             }
         }
     }
-
 }
