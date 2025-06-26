@@ -22,7 +22,7 @@ public class ConsoleApp {
      * Construct app using default attributes
      */
     public ConsoleApp() {
-        size = new Size(10, 5);
+        size = Config.appSizeDefault;
         state = AppState.STARTUP;
         this.views = new ArrayList<>();
         activeViewIndex = 0;
@@ -36,7 +36,8 @@ public class ConsoleApp {
      */
     public ConsoleApp(int width, int height) {
         this();
-        size = new Size(width, height);
+        this.size.width = width;
+        this.size.height = height;
     }
 
     /**

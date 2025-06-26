@@ -4,26 +4,23 @@ import java.util.ArrayList;
 
 /**
  * Manages each {@link Block} in the {@link Frame#canvas}
- * according to the {@link Frame#view}'s {@link View#uiObjects}
- * and other attributes (e.g. {@link Frame#size}
+ * according to the App's parameters and {@link View#uiObjects} to load
+ * and other attributes (e.g. {@link Frame#size}).
  */
 public class Frame {
 
-    private View view;
     public Position position;
     public Size size;
-    // TODO: Add defaultColorScheme
+    public Appearance defaultColorScheme;
     private Block[][] canvas;
 
     /**
-     * Constructs instance only using the provided {@link View}'s Attributes.
-     *
-     * @param view      =   Target {@link View}
+     * Constructs instance only using the default app attributes
      */
-    public Frame(View view) {
-        this.view = view;
-        this.position = view.position;
-        this.size = view.size;
+    public Frame() {
+        this.position = new Position(0, 0, 0);
+        this.size = Config.appSizeDefault;
+        this.defaultColorScheme = Config.appColorSchemeDefault;
         this.canvas = new Block[size.height][size.width];
 
         // create new Cells for canvas
@@ -35,16 +32,27 @@ public class Frame {
     }
 
     /**
-     * Constructs instance using the provided {@link View}'s Attributes
-     * and override the {@link View#position} and {@link View#size}.
+     * Constructs instance using the default app attributes
+     * and override the default {@link Config#appSizeDefault}.
      * with user-defined values.
      *
-     * @param view          =   Target {@link View}
+     * @param size          =   Specified {@link Size}
+     */
+    public Frame(Size size) {
+        this();
+        this.size = size;
+    }
+
+    /**
+     * Constructs instance using the default app attributes
+     * and override the default (0, 0, 0) position and {@link Config#appSizeDefault}.
+     * with user-defined values.
+     *
      * @param position      =   Specified {@link Position}
      * @param size          =   Specified {@link Size}
      */
-    public Frame(View view, Position position, Size size) {
-        this(view);
+    public Frame(Position position, Size size) {
+        this();
         this.position = position;
         this.size = size;
     }
@@ -57,9 +65,9 @@ public class Frame {
      *     <li>Paint (output) the canvas to the screen.
      * </ol>
      */
-    public void paint() {
+    public void paint(ArrayList<UIObject> uiObjects) {
         clearCanvas();
-        compile(view.uiObjects);
+        compile(uiObjects);
 
         for (Block[] row : canvas) {
             for (Block block : row) {
@@ -67,8 +75,6 @@ public class Frame {
             }
             System.out.println();
         }
-
-
     }
 
     /**
@@ -123,9 +129,20 @@ public class Frame {
         for (int y = 0; y < size.height; y++) {
             for (int x = 0; x < size.width; x++) {
                 if (canvas[y][x].bg == null) {
-                    canvas[y][x].update(' ', view.appearance.bg, view.appearance.fg);
+                    canvas[y][x].update(' ', this.defaultColorScheme.bg, this.defaultColorScheme.fg);
                 }
             }
+        }
+    }
+
+    /**
+     * Applies the {@link Frame#defaultColorScheme} to {@link UIObject#defaultAppearance}
+     * if needed.
+     * @param uiObject
+     */
+    public void applyViewAppearanceToUIObject(UIObject uiObject) {
+        if (uiObject.defaultAppearance.bg == null) {
+            uiObject.updateDefaultAppearance(defaultColorScheme.bg, defaultColorScheme.fg);
         }
     }
 }

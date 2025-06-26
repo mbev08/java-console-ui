@@ -17,7 +17,8 @@ public class Main {
 
         // Create main menu view
         {
-            View mainMenu = new View(0, 0, 0, w, h, BLUE, BLACK);
+            View mainMenu = new View(BLUE, BLACK);
+            app.addView(mainMenu);
 
             UIObject welcomeText = new UIObject("Welcome to the App!", false);
             welcomeText.position.update((w / 2) - ( welcomeText.text.length() / 2 ), 0, 0);
@@ -34,8 +35,6 @@ public class Main {
             welcomeText3.padding.update( Math.round((float) h * (float) 0.2), Math.round((float) h * (float) 0.2), 0, 0 );
             welcomeText3.updateDefaultAppearance(WHITE, BLACK);
             mainMenu.addUIObject(welcomeText3);
-
-            app.addView(mainMenu);
         }
 
 

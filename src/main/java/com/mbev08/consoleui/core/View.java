@@ -12,50 +12,29 @@ import java.util.ArrayList;
  */
 public class View {
 
-    // TODO: Move Position, Size, and Appearance to Frame's attributes only.
-    public Position position;
-    public Size size;
     public ArrayList<UIObject> uiObjects;
-    public Appearance appearance;
     private Frame frame;
 
     /**
-     * Constructs a {@link View} and sets the provided
-     * {@link Position} and {@link Size} values.
-     *
-     * @param x         X position of {@link View#position}
-     * @param y         Y position of {@link View#position}
-     * @param z         Z position of {@link View#position}
-     *                  <p>
-     *                  <t><i>(i.e. <b>Z-Index</b>)</i>
-     * @param width     Width of {@link View#size}
-     * @param height    Height of {@link View#size}
+     * Constructs a {@link View} and sets the default
+     * {@link Position} (0,0,0) and {@link Size} values (see {@link Config#appSizeDefault}).
      */
-    public View(int x, int y, int z, int width, int height) {
-        this.position = new Position(x, y, z);
-        this.size = new Size(width, height);
+    public View() {
         this.uiObjects = new ArrayList<>();
-        this.frame = new Frame(this);
-        this.appearance = new Appearance(Color.BLACK, Color.WHITE);
+        this.frame = new Frame();
     }
 
     /**
-     * Constructs a {@link View} and sets the provided
-     * {@link Position}, {@link Size}, and {@link Appearance} values.
+     * Constructs a {@link View} and overrides the
+     * {@link Frame#defaultColorScheme} using the provided
+     * {@link Appearance} values.
      *
-     * @param x         X position of {@link View#position}
-     * @param y         Y position of {@link View#position}
-     * @param z         Z position of {@link View#position}
-     *                  <p>
-     *                  <t><i>(i.e. <b>Z-Index</b>)</i>
-     * @param width     Width of {@link View#size}
-     * @param height    Height of {@link View#size}
-     * @param bg        Background Color of {@link View#appearance}
-     * @param fg        Foreground Color of {@link View#appearance}
+     * @param bg        Background {@link Color} of {@link Frame#defaultColorScheme}
+     * @param fg        Foreground {@link Color} of {@link Frame#defaultColorScheme}
      */
-    public View(int x, int y, int z, int width, int height, Color bg, Color fg) {
-        this(x, y, z, width, height);
-        this.appearance.update(bg, fg);
+    public View(Color bg, Color fg) {
+        this();
+        this.frame.defaultColorScheme.update(bg, fg);
     }
 
     /**
@@ -64,11 +43,10 @@ public class View {
      * @see Frame
      */
     public void load() {
-        // TODO: Separate the validation stuff.. doing too much.
         Validator validator = new ViewValidator();
 
         if (validator.isValid(this)) {
-            frame.paint();
+            frame.paint(this.uiObjects);
         }
     }
 
@@ -79,23 +57,8 @@ public class View {
      * @param uiObject      Target {@link UIObject}
      */
     public void addUIObject(UIObject uiObject) {
-        // TODO: Refactor this applyViewAppearanceToUIObject out of the method?
-        applyViewAppearanceToUIObject(uiObject);
+        frame.applyViewAppearanceToUIObject(uiObject);
         uiObjects.add(uiObject);
-    }
-
-    /**
-     * Applies the {@link View#appearance} to {@link UIObject#defaultAppearance}
-     * if needed.
-     * @param uiObject
-     */
-    private void applyViewAppearanceToUIObject(UIObject uiObject) {
-        // TODO: Throw exception if appearance is null
-        if (appearance != null) {
-            if (uiObject.defaultAppearance.bg == null) {
-                uiObject.updateDefaultAppearance(appearance.bg, appearance.fg);
-            }
-        }
     }
 
 }
