@@ -2,21 +2,25 @@ package com.mbev08.consoleui.core;
 
 
 import com.mbev08.consoleui.enums.AttributeModifier;
-
 import static org.fusesource.jansi.Ansi.Color;
 
-
+// TODO: Make an abstract class.
 public class UIObject {
 
     public Position position;
     public Size size;
     public Spacing padding;
     public String text;
+
+    // TODO: Consolidate into a singular activeColorScheme
     public ColorScheme currentColorScheme;
     public ColorScheme defaultColorScheme;
     public ColorScheme highlightedColorScheme;
+
+    // TODO: Remove isSelectable or redesign this type of categorization
     public boolean isSelectable;
 
+    // TODO: Remove isSelectable as an arg
     public UIObject(String text, boolean isSelectable) {
         if (text == null) {
             throw new NullPointerException("Text is null");
@@ -34,17 +38,20 @@ public class UIObject {
         this.currentColorScheme = this.defaultColorScheme;
     }
 
+    // TODO: Remove isSelectable as an arg
     public UIObject(String text, boolean isSelectable, Color defaultBg, Color defaultFg ) {
         this(text, isSelectable);
         this.defaultColorScheme.update(defaultBg, defaultFg);
     }
 
+    // TODO: Rename updateDefaultColorScheme()
     public void updateDefaultColorScheme(Color bg, Color fg) {
         defaultColorScheme.update(bg, fg);
         currentColorScheme.update(defaultColorScheme.bg, defaultColorScheme.fg);
         setOtherColorSchemesPerDefaultColorScheme();
     }
 
+    // TODO: Remove/move to different abstract class or interface, as not all UIObjects will have multiple ColorSchemes.
     private void setOtherColorSchemesPerDefaultColorScheme() {
         if (defaultColorScheme == null) {
             throw new NullPointerException("Default Color Scheme is null");
@@ -72,10 +79,12 @@ public class UIObject {
         size.update(newWidth, newHeight);
     }
 
+    // TODO: move to extensions
     private boolean charIsEmpty(char ch) {
         return ch == 0;
     }
 
+    // TODO: move to extensions
     private char[] newLineToCharArray(char[] line) {
         for (int x = 0; x < line.length; x++) {
             line[x] = ' ';
@@ -84,6 +93,7 @@ public class UIObject {
         return line;
     }
 
+    // TODO: move to extensions
     private char[][] verticalPaddingToCharArray(int paddingStack, char[][] charMatrix) {
         if (paddingStack <= 0) {
             return charMatrix;
@@ -104,6 +114,7 @@ public class UIObject {
         return charMatrix;
     }
 
+    // TODO: move to extensions
     private char[] horizontalPaddingToCharArray(int paddingStack, char[] line) {
         if (paddingStack <= 0) {
             return line;
@@ -124,6 +135,7 @@ public class UIObject {
         return line;
     }
 
+    // TODO: move to extensions
     private char[] textToCharArray(int textStack, char[] line) {
         char[] textChars = text.toCharArray();
 
@@ -142,6 +154,7 @@ public class UIObject {
         return line;
     }
 
+    // TODO: move to extensions
     public char[][] toCharMatrix() {
         if (size.modifier == AttributeModifier.AUTO) {
             refreshSize();
