@@ -1,9 +1,11 @@
 package com.mbev08.consoleui.enums;
 
+import com.mbev08.consoleui.core.ColorScheme;
+
 /**
  * Values used to identify whether an attribute
- * <i>(e.g. highlighted appearance [{@link com.mbev08.consoleui.core.Appearance}])</i>
- * can be influenced by another attribute <i>(e.g. default appearance)</i>
+ * <i>(e.g. highlighted {@link ColorScheme})</i>
+ * can be influenced by another attribute <i>(e.g. default {@link ColorScheme})</i>
  */
 public enum AttributeModifier {
     /**

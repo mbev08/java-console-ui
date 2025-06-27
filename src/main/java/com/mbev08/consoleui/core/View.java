@@ -27,7 +27,7 @@ public class View {
     /**
      * Constructs a {@link View} and overrides the
      * {@link Frame#defaultColorScheme} using the provided
-     * {@link Appearance} values.
+     * {@link ColorScheme} values.
      *
      * @param bg        Background {@link Color} of {@link Frame#defaultColorScheme}
      * @param fg        Foreground {@link Color} of {@link Frame#defaultColorScheme}
@@ -51,13 +51,13 @@ public class View {
     }
 
     /**
-     * Normalizes {@link UIObject#defaultAppearance},
+     * Normalizes {@link UIObject#defaultColorScheme},
      * then <b><i>appends</i></b> target {@link UIObject} to {@link View#uiObjects}.
      *
      * @param uiObject      Target {@link UIObject}
      */
     public void addUIObject(UIObject uiObject) {
-        frame.applyViewAppearanceToUIObject(uiObject);
+        frame.applyFrameColorSchemeToUIObject(uiObject);
         uiObjects.add(uiObject);
     }
 

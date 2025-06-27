@@ -16,11 +16,11 @@ public class Config {
 
     public static boolean debugModeEnabled, strictModeEnabled;
     public static Size appSizeDefault;
-    public static Appearance appColorSchemeDefault;
+    public static ColorScheme appColorSchemeDefault;
     public static Position uiObjectPositionDefault;
     public static Size uiObjectSizeDefault;
     public static Spacing uiObjectPaddingDefault;
-    public static Appearance uiObjectColorSchemeDefault;
+    public static ColorScheme uiObjectColorSchemeDefault;
 
 
     static {
@@ -51,7 +51,7 @@ public class Config {
             Color appDefaultBgColor, appDefaultFgColor;
             appDefaultBgColor = Color.valueOf(properties.getProperty("app.colorscheme.default.bg"));
             appDefaultFgColor = Color.valueOf(properties.getProperty("app.colorscheme.default.fg"));
-            appColorSchemeDefault = new Appearance(appDefaultBgColor, appDefaultFgColor);
+            appColorSchemeDefault = new ColorScheme(appDefaultBgColor, appDefaultFgColor);
         }
 
         // DEFAULTS.UIObject
@@ -80,7 +80,7 @@ public class Config {
             //Color uiObjectDefaultBgColor, uiObjectDefaultFgColor;
             //uiObjectDefaultBgColor = Color.valueOf(properties.getProperty("UIObject.colorscheme.default.bg"));
             //uiObjectDefaultFgColor = Color.valueOf(properties.getProperty("UIObject.colorscheme.default.fg"));
-            //uiObjectColorSchemeDefault = new Appearance(uiObjectDefaultBgColor, uiObjectDefaultFgColor);
+            //uiObjectColorSchemeDefault = new ColorScheme(uiObjectDefaultBgColor, uiObjectDefaultFgColor);
 
         }
     }

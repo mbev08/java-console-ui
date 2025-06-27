@@ -11,7 +11,7 @@ public class Frame {
 
     public Position position;
     public Size size;
-    public Appearance defaultColorScheme;
+    public ColorScheme defaultColorScheme;
     private Block[][] canvas;
 
     /**
@@ -115,7 +115,7 @@ public class Frame {
             for (int y = uiObject.position.y; y <= uiObject.getEndingYPosition(); y++) {
                 for (int x = uiObject.position.x; x <= uiObject.getEndingXPosition(); x++) {
                     char objChar = objAsBlockMatrix[y - uiObject.position.y][x - uiObject.position.x];
-                    canvas[y][x].update(objChar, uiObject.currentAppearance.bg, uiObject.currentAppearance.fg);
+                    canvas[y][x].update(objChar, uiObject.currentColorScheme.bg, uiObject.currentColorScheme.fg);
                 }
             }
         }
@@ -136,13 +136,13 @@ public class Frame {
     }
 
     /**
-     * Applies the {@link Frame#defaultColorScheme} to {@link UIObject#defaultAppearance}
+     * Applies the {@link Frame#defaultColorScheme} to {@link UIObject#defaultColorScheme}
      * if needed.
      * @param uiObject
      */
-    public void applyViewAppearanceToUIObject(UIObject uiObject) {
-        if (uiObject.defaultAppearance.bg == null) {
-            uiObject.updateDefaultAppearance(defaultColorScheme.bg, defaultColorScheme.fg);
+    public void applyFrameColorSchemeToUIObject(UIObject uiObject) {
+        if (uiObject.defaultColorScheme.bg == null) {
+            uiObject.updateDefaultColorScheme(defaultColorScheme.bg, defaultColorScheme.fg);
         }
     }
 }

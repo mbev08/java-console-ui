@@ -2,10 +2,8 @@ package com.mbev08.consoleui.core;
 
 
 import com.mbev08.consoleui.enums.AttributeModifier;
-import org.fusesource.jansi.Ansi;
 
 import static org.fusesource.jansi.Ansi.Color;
-import static org.fusesource.jansi.Ansi.Color.*;
 
 
 public class UIObject {
@@ -16,10 +14,10 @@ public class UIObject {
     public String text;
 
     // TODO: Replace *Appearance vars with ColorSchemeService
-    public Appearance currentAppearance;
-    public Appearance defaultAppearance;
-    public Appearance highlightedAppearance;
-    public Appearance selectedAppearance;
+    public ColorScheme currentColorScheme;
+    public ColorScheme defaultColorScheme;
+    public ColorScheme highlightedColorScheme;
+    public ColorScheme selectedColorScheme;
 
     // TODO: Replace isSelectable w/ Enum ObjectType
     public boolean isSelectable;
@@ -36,34 +34,34 @@ public class UIObject {
         this.size = new Size(text.length(), Config.uiObjectSizeDefault.height);
         this.padding = new Spacing(Config.uiObjectPaddingDefault.top, Config.uiObjectPaddingDefault.bottom, Config.uiObjectPaddingDefault.left, Config.uiObjectPaddingDefault.right);
 
-        this.defaultAppearance = new Appearance(null, null );
-        this.highlightedAppearance = new Appearance(null, null );
-        this.selectedAppearance = new Appearance(null, null );
-        this.currentAppearance = this.defaultAppearance;
+        this.defaultColorScheme = new ColorScheme(null, null );
+        this.highlightedColorScheme = new ColorScheme(null, null );
+        this.selectedColorScheme = new ColorScheme(null, null );
+        this.currentColorScheme = this.defaultColorScheme;
     }
 
     public UIObject(String text, boolean isSelectable, Color defaultBg, Color defaultFg ) {
         this(text, isSelectable);
-        this.defaultAppearance.update(defaultBg, defaultFg);
+        this.defaultColorScheme.update(defaultBg, defaultFg);
     }
 
-    public void updateDefaultAppearance(Color bg, Color fg) {
-        defaultAppearance.update(bg, fg);
-        currentAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
-        setAppearanceBasedOnDefault();
+    public void updateDefaultColorScheme(Color bg, Color fg) {
+        defaultColorScheme.update(bg, fg);
+        currentColorScheme.update(defaultColorScheme.bg, defaultColorScheme.fg);
+        setOtherColorSchemesPerDefaultColorScheme();
     }
 
-    private void setAppearanceBasedOnDefault() {
-        if (defaultAppearance == null) {
-            throw new NullPointerException("Default appearance is null");
+    private void setOtherColorSchemesPerDefaultColorScheme() {
+        if (defaultColorScheme == null) {
+            throw new NullPointerException("Default Color Scheme is null");
         }
 
-        if (highlightedAppearance.modifier == AttributeModifier.AUTO) {
-            highlightedAppearance.update(defaultAppearance.fg, defaultAppearance.bg);
+        if (highlightedColorScheme.modifier == AttributeModifier.AUTO) {
+            highlightedColorScheme.update(defaultColorScheme.fg, defaultColorScheme.bg);
         }
 
-        if (selectedAppearance.modifier == AttributeModifier.AUTO) {
-            selectedAppearance.update(defaultAppearance.bg, defaultAppearance.fg);
+        if (selectedColorScheme.modifier == AttributeModifier.AUTO) {
+            selectedColorScheme.update(defaultColorScheme.bg, defaultColorScheme.fg);
         }
     }
 
