@@ -12,14 +12,9 @@ public class UIObject {
     public Size size;
     public Spacing padding;
     public String text;
-
-    // TODO: Replace *Appearance vars with ColorSchemeService
     public ColorScheme currentColorScheme;
     public ColorScheme defaultColorScheme;
     public ColorScheme highlightedColorScheme;
-    public ColorScheme selectedColorScheme;
-
-    // TODO: Replace isSelectable w/ Enum ObjectType
     public boolean isSelectable;
 
     public UIObject(String text, boolean isSelectable) {
@@ -36,7 +31,6 @@ public class UIObject {
 
         this.defaultColorScheme = new ColorScheme(null, null );
         this.highlightedColorScheme = new ColorScheme(null, null );
-        this.selectedColorScheme = new ColorScheme(null, null );
         this.currentColorScheme = this.defaultColorScheme;
     }
 
@@ -58,10 +52,6 @@ public class UIObject {
 
         if (highlightedColorScheme.modifier == AttributeModifier.AUTO) {
             highlightedColorScheme.update(defaultColorScheme.fg, defaultColorScheme.bg);
-        }
-
-        if (selectedColorScheme.modifier == AttributeModifier.AUTO) {
-            selectedColorScheme.update(defaultColorScheme.bg, defaultColorScheme.fg);
         }
     }
 

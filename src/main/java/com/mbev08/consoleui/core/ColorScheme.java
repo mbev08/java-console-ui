@@ -11,7 +11,6 @@ import static org.fusesource.jansi.Ansi.Color;
  * <i>(e.g. bg color, fg color)</i>
  */
 public class ColorScheme implements AggregatedAttribute{
-    // TODO: Create ColorSchemeService
 
     public Color bg, fg;
     public AttributeModifier modifier;

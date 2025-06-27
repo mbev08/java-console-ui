@@ -8,7 +8,6 @@ import com.mbev08.consoleui.core.View;
  * Validator for instances of {@link View}.
  */
 public class ViewValidator implements Validator {
-    // TODO: convert to singleton.
 
     /**
      * Target {@link View} currently being validated.
