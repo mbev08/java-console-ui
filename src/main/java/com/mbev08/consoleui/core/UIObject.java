@@ -70,7 +70,8 @@ public class UIObject {
         return position.x + size.width - 1;
     }
 
-    private void refreshSize() {
+    // TODO: this is bad logic/design.. need to revise.
+    public void refreshSize() {
         int newWidth, newHeight;
 
         newWidth = text.length() + padding.left + padding.right;
