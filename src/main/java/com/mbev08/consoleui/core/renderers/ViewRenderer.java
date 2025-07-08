@@ -9,6 +9,7 @@ public class ViewRenderer {
 
     private View view;
     private Canvas canvas;
+    private CanvasCursor cursor;
     
 
     /**
@@ -18,6 +19,7 @@ public class ViewRenderer {
     public ViewRenderer(View view) {
         this.view = view;
         this.canvas = new Canvas(this.view.frame.size);
+        this.cursor = new CanvasCursor();
     }
 
     /**

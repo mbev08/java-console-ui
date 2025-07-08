@@ -8,7 +8,7 @@ import com.mbev08.consoleui.enums.AttributeModifier;
 public class UIObjectRenderer {
 
     private Canvas canvas;
-    private CanvasCursor cursor;
+    private Cursor cursor;
 
     /**
      * Constructs an instance using the provided {@link UIObject} 
@@ -16,7 +16,7 @@ public class UIObjectRenderer {
      */
     public UIObjectRenderer() {
         this.canvas = new Canvas();
-        this.cursor = new CanvasCursor();
+        this.cursor = new Cursor();
     }
 
     /**
@@ -35,21 +35,25 @@ public class UIObjectRenderer {
 
         this.cursor.reset();
         this.canvas.resize(uiObject.size);
-
-
-        addText(uiObject.text);
+        
+        renderContent(uiObject);
 
         return this.canvas;
     }
 
     /**
-     * Add padding to canvas
+     * Render the content of {@link UIObject}.
+     *
+     * @param uiObject      =   target {@link UIObject}
      */
-    public void renderPadding(Spacing padding) {
-        addVerticalPadding(padding.top);
-        addVerticalPadding(padding.bottom);
-        addHorizontalPadding(padding.left);
-        addHorizontalPadding(padding.right);
+    private void renderContent(UIObject uiObject) {
+        addVerticalPadding(uiObject.padding.top);
+        addHorizontalPadding(uiObject.padding.left);
+
+        addText(uiObject.text);
+
+        addHorizontalPadding(uiObject.padding.right);
+        addVerticalPadding(uiObject.padding.bottom);
     }
     
     /**
@@ -58,23 +62,7 @@ public class UIObjectRenderer {
      * @param n      =   count of vertical padding to add
      */
     private void addVerticalPadding(int n) {
-        // TODO: move to renderer class
-        if (n <= 0) {
-            // Offset
-            return;
-        }
-
-        for (int y = 0; y < charMatrix.length; y++) {
-            if(!charIsEmpty(charMatrix[y][0])) {
-                continue;
-            }
-
-            for (int i = 0; i < n; i++) {
-                this.canvas.matrix[y] = newLineToCharArray(y);
-                y++;
-            }
-            break;
-        }
+        this.cursor.skipYPositions(n);
     }
 
     /**
@@ -83,46 +71,36 @@ public class UIObjectRenderer {
      * @param n      =   count of horizontal padding to add
      */
     private void addHorizontalPadding(int n) {
-        if (n <= 0) {
-            return line;
-        }
-
-        for (int x = 0; x < this.canvas.size.width; x++) {
-            if (!charIsEmpty(line[x])) {
-                continue;
-            }
-
-            for (int i = 0; i < n; i++) {
-                line[x] = ' ';
-                x++;
-            }
-            break;
-        }
+        this.cursor.skipXPositions(n);
     }
-
-    I LEFT OFF HERE!!!!
 
     /**
      * Maps {@link UIObject#text} value to an existing line of a charMatrix
-     *
      *
      * @param text     =   String for {@link UIObject#text}
      */
     private void addText(String text) {
         char[] textChars = text.toCharArray();
 
+        cursor.moveToLastPosition();
+
+        for (int i = 0; i < text.length(); i++) {
+            cursor.nextX();
+
+            Block targetBlock = this.canvas.getBlock(this.cursor);
+
+            targetBlock.charValue = textChars[i];
+        }
+
+
         for (int x = 0; x < this.canvas.size.width; x++) {
 
-            Block block = this.canvas.matrix[cursor.row][x];
+            Block targetBlock = ;
 
-            if (!block.isEmpty()) {
+            if (!targetBlock.isEmpty()) {
                 continue;
             }
 
-            for (int i = 0; i < text.length(); i++) {
-                block.charValue = textChars[i];
-                x++;
-            }
             break;
         }
     }

@@ -2,6 +2,8 @@ package com.mbev08.consoleui.core;
 
 import java.util.ArrayList;
 
+import com.mbev08.consoleui.core.renderers.UIObjectRenderer;
+
 /**
  * Manages each {@link Block} in the {@link Frame#canvas}
  * according to the App's parameters and {@link View#uiObjects} to load
@@ -93,6 +95,7 @@ public class Frame {
         loadBlankBlocksToCanvas();
     }
 
+    // TODO move these to View's renderer.
     /**
      * Populates blocks to allocate space for {@link View#uiObjects}
      *
@@ -100,17 +103,19 @@ public class Frame {
      */
     private void loadUIObjectsToCanvas(ArrayList<UIObject> uiObjects) {
 
+        UIObjectRenderer renderer = new UIObjectRenderer();
+
         for (UIObject uiObject : uiObjects) {
-            char[][] objAsBlockMatrix = uiObject.toCharMatrix();
+
+            Canvas objectCanvas = renderer.render(uiObject);
 
             for (int y = uiObject.position.y; y <= uiObject.getMaxYPosition(); y++) {
                 for (int x = uiObject.position.x; x <= uiObject.getMaxXPosition(); x++) {
-                    char objChar = objAsBlockMatrix[y - uiObject.position.y][x - uiObject.position.x];
-                    canvas[y][x].update(objChar, uiObject.currentColorScheme.bg, uiObject.currentColorScheme.fg);
+                    Block block = objectCanvas.matrix[y - uiObject.position.y][x - uiObject.position.x];
+                    canvas[y][x].update(block.charValue, block.bg, block.fg);
                 }
             }
         }
-
     }
 
     /**
