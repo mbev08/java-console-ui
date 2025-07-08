@@ -38,4 +38,3 @@ COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 # Run application
 ENTRYPOINT ["java", "--enable-native-access=ALL-UNNAMED", "--sun-misc-unsafe-memory-access=allow", "-cp", "app:app/lib/*", "com.mbev08.consoleui.Main"]
 
-

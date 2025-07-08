@@ -1,6 +1,7 @@
 package com.mbev08.consoleui.core;
 
 
+import com.mbev08.consoleui.components.Button;
 import com.mbev08.consoleui.enums.AttributeModifier;
 import static org.fusesource.jansi.Ansi.Color;
 
@@ -20,7 +21,13 @@ public class UIObject {
     // TODO: Remove isSelectable or redesign this type of categorization
     public boolean isSelectable;
 
-    // TODO: Remove isSelectable as an arg
+    /**
+     * Constructs instance using the provided text and selectability.
+     *
+     * @param text              =   Text value the object displays.
+     * @param isSelectable      =   Toggle of whether or not the cursor can hover 
+     *                              over te object for selection (i.e. {@link Button})
+     */
     public UIObject(String text, boolean isSelectable) {
         if (text == null) {
             throw new NullPointerException("Text is null");
@@ -38,21 +45,42 @@ public class UIObject {
         this.currentColorScheme = this.defaultColorScheme;
     }
 
-    // TODO: Remove isSelectable as an arg
+    /**
+     * Constructs instance using the provided text, selectability, 
+     * and custom color scheme's colors..
+     *
+     * @param text              =   Text value the object displays.
+     * @param isSelectable      =   Toggle of whether or not the cursor can hover 
+     *                              over te object for selection (i.e. {@link Button})
+     * @param defaultBg         =   Default background color of UI Object.
+     * @param defaultFg         =   Default foreground color of UI Object
+     */
     public UIObject(String text, boolean isSelectable, Color defaultBg, Color defaultFg ) {
         this(text, isSelectable);
         this.defaultColorScheme.update(defaultBg, defaultFg);
     }
 
-    // TODO: Rename updateDefaultColorScheme()
+    /**
+     * Change the {@link Color}s of {@link UIObject#defaultColorScheme}.
+     *
+     * @param bg    =   Background {@link Color} 
+     * @param fg    =   Foreground {@link Color} 
+     */
     public void updateDefaultColorScheme(Color bg, Color fg) {
+        // TODO: Rename updateDefaultColorScheme()
         defaultColorScheme.update(bg, fg);
         currentColorScheme.update(defaultColorScheme.bg, defaultColorScheme.fg);
         setOtherColorSchemesPerDefaultColorScheme();
     }
 
-    // TODO: Remove/move to different abstract class or interface, as not all UIObjects will have multiple ColorSchemes.
+    /**
+     * Changes the other {@link ColorScheme}s of the UI Object according to 
+     * what the {@link UIObject#defaultColorScheme} is set to.
+     */
     private void setOtherColorSchemesPerDefaultColorScheme() {
+        // TODO: Remove/move to different abstract class or interface, as not all UIObjects will have multiple ColorSchemes.
+        
+        // TODO: Move validation to a dedicated class.
         if (defaultColorScheme == null) {
             throw new NullPointerException("Default Color Scheme is null");
         }
@@ -62,15 +90,28 @@ public class UIObject {
         }
     }
 
-    public int getEndingYPosition() {
+    /**
+     * Calculates the max Y coordinate of the {@link UIObject}
+     *
+     * @return  calculated {@link Integer} value. 
+     */
+    public int getMaxYPosition() {
         return position.y + size.height - 1;
     }
 
-    public int getEndingXPosition() {
+    /**
+     * Calculates the max X coordinate of the {@link UIObject}
+     *
+     * @return  calculated {@link Integer} value. 
+     */
+    public int getMaxXPosition() {
         return position.x + size.width - 1;
     }
 
-    // TODO: this is bad logic/design.. need to revise.
+    /**
+     * Refreshes the {@link UIObject#size} based on length of {@link UIObject#text}
+     * and {@link UIObject#padding} values.
+     */
     public void refreshSize() {
         int newWidth, newHeight;
 
@@ -78,110 +119,6 @@ public class UIObject {
         newHeight = 1 + padding.top + padding.bottom; // TODO: Probably need to add some kind of word wrap consideration here.
 
         size.update(newWidth, newHeight);
-    }
-
-    // TODO: move to extensions
-    private boolean charIsEmpty(char ch) {
-        return ch == 0;
-    }
-
-    // TODO: move to extensions
-    private char[] newLineToCharArray(char[] line) {
-        for (int x = 0; x < line.length; x++) {
-            line[x] = ' ';
-        }
-
-        return line;
-    }
-
-    // TODO: move to extensions
-    private char[][] verticalPaddingToCharArray(int paddingStack, char[][] charMatrix) {
-        if (paddingStack <= 0) {
-            return charMatrix;
-        }
-
-        for (int y = 0; y < charMatrix.length; y++) {
-            if(!charIsEmpty(charMatrix[y][0])) {
-                continue;
-            }
-
-            for (int i = 0; i < paddingStack; i++) {
-                charMatrix[y] = newLineToCharArray(charMatrix[y]);
-                y++;
-            }
-            break;
-        }
-
-        return charMatrix;
-    }
-
-    // TODO: move to extensions
-    private char[] horizontalPaddingToCharArray(int paddingStack, char[] line) {
-        if (paddingStack <= 0) {
-            return line;
-        }
-
-        for (int x = 0; x < line.length; x++) {
-            if (!charIsEmpty(line[x])) {
-                continue;
-            }
-
-            for (int i = 0; i < paddingStack; i++) {
-                line[x] = ' ';
-                x++;
-            }
-            break;
-        }
-
-        return line;
-    }
-
-    // TODO: move to extensions
-    private char[] textToCharArray(int textStack, char[] line) {
-        char[] textChars = text.toCharArray();
-
-        for (int x = 0; x < line.length; x++) {
-            if (!charIsEmpty(line[x])) {
-                continue;
-            }
-
-            for (int i = 0; i < textStack; i++) {
-                line[x] = textChars[i];
-                x++;
-            }
-            break;
-        }
-
-        return line;
-    }
-
-    // TODO: move to extensions
-    public char[][] toCharMatrix() {
-        if (size.modifier == AttributeModifier.AUTO) {
-            refreshSize();
-        }
-
-        char[][] charMatrix = new char[size.height][size.width];
-        int x = 0, y = 0;
-
-        // TODO: Add consideration of wordwrap
-        // TODO: Ensure validation against running out of room for text per size
-        charMatrix = verticalPaddingToCharArray(padding.top, charMatrix);
-        y += padding.top;
-
-        charMatrix[y] = horizontalPaddingToCharArray(padding.left, charMatrix[y]);
-        x += padding.left;
-
-        charMatrix[y] = textToCharArray(text.length(), charMatrix[y]);
-        x += text.length();
-
-        charMatrix[y] = horizontalPaddingToCharArray(padding.right, charMatrix[y]);
-        x += padding.right;
-
-        charMatrix = verticalPaddingToCharArray(padding.bottom, charMatrix);
-        y = padding.bottom;
-
-        return charMatrix;
     }
 
 }

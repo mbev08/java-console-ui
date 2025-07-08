@@ -12,7 +12,6 @@ public class Frame {
     public Position position;
     public Size size;
     public ColorScheme defaultColorScheme;
-    private Block[][] canvas;
 
     /**
      * Constructs instance only using the default app attributes
@@ -21,14 +20,6 @@ public class Frame {
         this.position = new Position(0, 0, 0);
         this.size = Config.appSizeDefault;
         this.defaultColorScheme = Config.appColorSchemeDefault;
-        this.canvas = new Block[size.height][size.width];
-
-        // create new Cells for canvas
-        for (int y = 0; y < size.height; y++) {
-            for (int x = 0; x < size.width; x++) {
-                this.canvas[y][x] = new Block(' ', null, null);
-            }
-        }
     }
 
     /**
@@ -112,8 +103,8 @@ public class Frame {
         for (UIObject uiObject : uiObjects) {
             char[][] objAsBlockMatrix = uiObject.toCharMatrix();
 
-            for (int y = uiObject.position.y; y <= uiObject.getEndingYPosition(); y++) {
-                for (int x = uiObject.position.x; x <= uiObject.getEndingXPosition(); x++) {
+            for (int y = uiObject.position.y; y <= uiObject.getMaxYPosition(); y++) {
+                for (int x = uiObject.position.x; x <= uiObject.getMaxXPosition(); x++) {
                     char objChar = objAsBlockMatrix[y - uiObject.position.y][x - uiObject.position.x];
                     canvas[y][x].update(objChar, uiObject.currentColorScheme.bg, uiObject.currentColorScheme.fg);
                 }

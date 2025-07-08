@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class View {
 
     public ArrayList<UIObject> uiObjects;
-    private Frame frame;
+    public Frame frame;
 
     /**
      * Constructs a {@link View} and sets the default

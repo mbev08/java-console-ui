@@ -42,6 +42,15 @@ public class Block implements AggregatedAttribute {
     }
 
     /**
+     * Checks if {@link Block} is empty
+     *
+     * @return {@link Boolean} indicating if the {@link Block#charValue} is empty.
+     */
+    public boolean isEmpty() {
+        return this.charValue == 0;
+    }
+
+    /**
      * Updates block (charValue, bg, fg)
      * @param args [
      *              <ol>

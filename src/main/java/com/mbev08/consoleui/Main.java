@@ -11,12 +11,18 @@ import static org.fusesource.jansi.Ansi.Color.*;
 public class Main {
     public static void main(String[] args) {
 
+        /**
+         * vars for basic attributes of app.
+         */
         int w = 50, h = 15;
         Color bg = BLUE, fg = BLACK;
 
+        // TODO Create a default bg/fg in ConsoleApp.
         ConsoleApp app = new ConsoleApp(w, h);
 
-        // Create main menu view
+        /**
+         * create main menu view
+         */
         {
             View mainMenu = new View(bg, fg);
             app.addView(mainMenu);
@@ -34,14 +40,14 @@ public class Main {
             mainMenu.addUIObject(menuOption1);
 
             UIObject menuOption2 = new UIObject("Option 2", true);
-            menuOption2.position.update(2, menuOption1.getEndingYPosition() + 2, 0);
+            menuOption2.position.update(2, menuOption1.getMaxYPosition() + 2, 0);
             menuOption2.padding.update(1, 1, 1, 1);
             menuOption2.refreshSize();
             menuOption2.updateDefaultColorScheme(fg, bg);
             mainMenu.addUIObject(menuOption2);
 
             UIObject menuOption3 = new UIObject("Option 3", true);
-            menuOption3.position.update(2, menuOption2.getEndingYPosition() + 2, 0);
+            menuOption3.position.update(2, menuOption2.getMaxYPosition() + 2, 0);
             menuOption3.padding.update(1, 1, 1, 1);
             menuOption3.refreshSize();
             menuOption3.updateDefaultColorScheme(fg, bg);
