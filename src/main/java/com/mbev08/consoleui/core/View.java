@@ -1,5 +1,6 @@
 package com.mbev08.consoleui.core;
 
+import com.mbev08.consoleui.core.renderers.ViewRenderer;
 import com.mbev08.consoleui.core.validators.Validator;
 import com.mbev08.consoleui.core.validators.ViewValidator;
 
@@ -8,20 +9,26 @@ import java.util.ArrayList;
 
 
 /**
- * Manages a screen's {@link Frame} and list of {@link UIObject}(s)
+ * Manages a screen's {@link Canvas} and list of {@link UIObject}(s)
  */
 public class View {
 
     public ArrayList<UIObject> uiObjects;
-    public Frame frame;
+    public Position position;
+    public Size size;
+    public ColorScheme defaultColorScheme;
+    private ViewRenderer renderer;
 
     /**
      * Constructs a {@link View} and sets the default
      * {@link Position} (0,0,0) and {@link Size} values (see {@link Config#appSizeDefault}).
      */
     public View() {
-        this.uiObjects = new ArrayList<>();
-        this.frame = new Frame();
+        uiObjects = new ArrayList<>();
+        position = new Position(0, 0, 0);
+        size = Config.appSizeDefault;
+        defaultColorScheme = Config.appColorSchemeDefault;
+        renderer = new ViewRenderer(this);
     }
 
     /**
@@ -34,7 +41,7 @@ public class View {
      */
     public View(Color bg, Color fg) {
         this();
-        this.frame.defaultColorScheme.update(bg, fg);
+        defaultColorScheme.update(bg, fg);
     }
 
     /**
@@ -45,8 +52,8 @@ public class View {
     public void load() {
         Validator validator = new ViewValidator();
 
-        if (validator.isValid(this)) {
-            frame.paint(this.uiObjects);
+        if (validator.isValid(uiObjects)) {
+            renderer.render();
         }
     }
 
@@ -57,8 +64,8 @@ public class View {
      * @param uiObject      Target {@link UIObject}
      */
     public void addUIObject(UIObject uiObject) {
-        frame.applyFrameColorSchemeToUIObject(uiObject);
         uiObjects.add(uiObject);
     }
+
 
 }

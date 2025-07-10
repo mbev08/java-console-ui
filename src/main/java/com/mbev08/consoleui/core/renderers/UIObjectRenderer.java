@@ -15,8 +15,8 @@ public class UIObjectRenderer {
      *
      */
     public UIObjectRenderer() {
-        this.canvas = new Canvas();
-        this.cursor = new Cursor();
+        canvas = new Canvas();
+        cursor = new Cursor();
     }
 
     /**
@@ -26,19 +26,16 @@ public class UIObjectRenderer {
      * @return charMatrix compatible with {@link Frame#canvas}
      */
     public Canvas render(UIObject uiObject) {
-        // TODO: Ensure validation against running out of room for text per size
-        // TODO: Add consideration of wordwrap
-
         if (uiObject.size.modifier == AttributeModifier.AUTO) {
             uiObject.refreshSize();
         }
 
-        this.cursor.reset();
-        this.canvas.resize(uiObject.size);
+        cursor.reset();
+        canvas.resize(uiObject.size);
         
-        renderContent(uiObject);
+        compile(uiObject);
 
-        return this.canvas;
+        return canvas;
     }
 
     /**
@@ -46,7 +43,7 @@ public class UIObjectRenderer {
      *
      * @param uiObject      =   target {@link UIObject}
      */
-    private void renderContent(UIObject uiObject) {
+    private void compile(UIObject uiObject) {
         addVerticalPadding(uiObject.padding.top);
         addHorizontalPadding(uiObject.padding.left);
 
@@ -62,7 +59,7 @@ public class UIObjectRenderer {
      * @param n      =   count of vertical padding to add
      */
     private void addVerticalPadding(int n) {
-        this.cursor.skipYPositions(n);
+        cursor.skipYPositions(n);
     }
 
     /**
@@ -71,7 +68,7 @@ public class UIObjectRenderer {
      * @param n      =   count of horizontal padding to add
      */
     private void addHorizontalPadding(int n) {
-        this.cursor.skipXPositions(n);
+        cursor.skipXPositions(n);
     }
 
     /**
@@ -87,22 +84,9 @@ public class UIObjectRenderer {
         for (int i = 0; i < text.length(); i++) {
             cursor.nextX();
 
-            Block targetBlock = this.canvas.getBlock(this.cursor);
+            Block targetBlock = canvas.getBlock(cursor);
 
             targetBlock.charValue = textChars[i];
         }
-
-
-        for (int x = 0; x < this.canvas.size.width; x++) {
-
-            Block targetBlock = ;
-
-            if (!targetBlock.isEmpty()) {
-                continue;
-            }
-
-            break;
-        }
     }
-
 }

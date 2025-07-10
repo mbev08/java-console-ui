@@ -46,6 +46,8 @@ public class ColorScheme implements AggregatedAttribute{
         this.modifier = modifier;
     }
 
+    // TODO add copy() 
+
     /**
      * Updates color scheme (bg color, fg color)
      * @param args [

@@ -38,7 +38,7 @@ public class Block implements AggregatedAttribute {
      * "clears" the {@link Block}'s attributes
      */
     public void clear() {
-        update(' ', null, null);
+        update(0, null, null);
     }
 
     /**
@@ -47,7 +47,7 @@ public class Block implements AggregatedAttribute {
      * @return {@link Boolean} indicating if the {@link Block#charValue} is empty.
      */
     public boolean isEmpty() {
-        return this.charValue == 0;
+        return charValue == 0;
     }
 
     /**
